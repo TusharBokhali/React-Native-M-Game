@@ -1,34 +1,66 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useState } from 'react';
-import { Text,View,StyleSheet,Pressable } from 'react-native';
+import { Text, View, StyleSheet, Pressable } from 'react-native';
 
 function Level() {
-  
-  let dublicate=[];
-  for(let i=1;i<=50;i++)
-    {
-      dublicate.push(i)
+
+  let [up, setUp] = useState("")
+
+  let dublicate = [];
+  for (let i = 1; i <= 20; i++) {
+    dublicate.push(i)
+  }
+  let [levele, setlevel] = useState(dublicate)
+
+  let ComplateData = async () => {
+    try {
+      let values = await AsyncStorage.getItem("Data")
+      let fix = JSON.parse(values)
+      setUp(fix+1)
+
+    } catch (e) {
+      console.log(e);
+
     }
-    let [levele,setlevel] = useState(dublicate)
+  }
+  ComplateData()
+
+  let StartGame = (e) =>{
+    if(e<=up)
+    {
+
+      let store = async (e) => {
+        try {
+          await AsyncStorage.setItem("Complate", e)
+        } catch (error) {
+          console.log(error)
+        }
+      };
+      store(e);
+    }else{
+      alert("Level not Compalte!")
+    }
+  }
   return (
-    
+
     <>
       <View style={style.main}>
-            <View style={style.Content}>
+        <View style={style.Content}>
           <Text style={style.Heading}>Level</Text>
-                <View style={style.flex}>
-              {
-                levele.map((el,inx)=>{
-                  return(
-                    <View key={inx}>
-                <Pressable style={style.button} >
-                <Text style={style.text}  onPress={()=>{alert(`Click Button ${el}`)}}>{el}</Text>
-                </Pressable>
-                </View>
-                  )
-                })
-              }
-             </View>
-        </View>    
+          <View style={style.flex}>
+            {
+              levele.map((el, inx) => {
+                return (
+                  <View key={inx}>
+                    <Pressable style={up >= el ? style.active:style.button  } >
+                      <Text style={style.text} onPress={() => {StartGame(el)}}>{el}</Text>
+                    </Pressable>
+                  </View>
+                )
+              })
+            }
+          </View>
+        </View>
       </View>
     </>
   )
@@ -36,34 +68,44 @@ function Level() {
 
 export default Level
 
-const style =  StyleSheet.create({
-  main:{
-        width:'100%',
-        height:'100%',
-        backgroundColor:'#302d2d',
+const style = StyleSheet.create({
+  main: {
+    width: '100%',
+    height: '100%',
+    backgroundColor: '#302d2d',
   },
-  Content:{
-    width:'90%',
-    height:'80%',
-    margin:'auto',
-    paddingTop:10,
+  Content: {
+    width: '90%',
+    height: '80%',
+    margin: 'auto',
+    paddingTop: 10,
   },
- Heading:{
-  fontSize:42,
-  fontWeight:'500',
-  color:'white',
-  textAlign:'center',
-  marginBottom:20,
- },
+  Heading: {
+    fontSize: 42,
+    fontWeight: '500',
+    color: 'white',
+    textAlign: 'center',
+    marginBottom: 20,
+  },
   button: {
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 4,
     elevation: 3,
     backgroundColor: '#272727',
-    width:50,
-    height:50,
-    margin:5,
+    width: 50,
+    height: 50,
+    margin: 5,
+  },
+  active:{
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 4,
+    elevation: 3,
+    backgroundColor: 'green',
+    width: 50,
+    height: 50,
+    margin: 5,
   },
   text: {
     fontSize: 20,
@@ -71,9 +113,9 @@ const style =  StyleSheet.create({
     letterSpacing: 0.25,
     color: 'white',
   },
-  flex:{
-    flexDirection:'row',
-    flexWrap:'wrap',
-    justifyContent:'center'
+  flex: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center'
   }
 })

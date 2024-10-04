@@ -11,16 +11,16 @@ function First(navigation) {
         </View>
         <View style={style.screen}>
           <Link href={"/First"}>
-            <Pressable style={style.button} onPress={()=>{navigation.navigation("First")}}>
+            <Pressable style={style.button} onPress={() => { navigation.navigation("First") }}>
               <Text style={style.text} >Continue</Text>
             </Pressable>
           </Link>
-          <Link href={"/Start"} onPress={() => { navigation.navigation("Start")}}>
+          <Link href={"/Start"} onPress={() => { navigation.navigation("Start") }}>
             <Pressable style={style.button} >
               <Text style={style.text}>Start</Text>
             </Pressable>
           </Link>
-          <Link href={"/Level"} onPress={() => { navigation.navigation("Level")}}>
+          <Link href={"/Level"} onPress={() => { navigation.navigation("Level") }}>
             <Pressable style={style.button} >
               <Text style={style.text}>Level</Text>
             </Pressable>
@@ -62,11 +62,11 @@ const style = StyleSheet.create({
     backgroundColor: 'black',
     width: '110%',
     marginTop: 15,
-    
+
   },
   text: {
-    width:100,  
-    textAlign:'center',
+    width: 100,
+    textAlign: 'center',
     fontSize: 16,
     lineHeight: 21,
     fontWeight: 'bold',
